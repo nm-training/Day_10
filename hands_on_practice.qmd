@@ -14,23 +14,39 @@ load(url("https://bit.ly/4eZIXte"))
 
 ## Your Turn 01
 
-Plot histogram of `Height` using vs Dataset
+Plot histogram of `Height` using `vs` Dataset.
+
+Add `binwidth` = 5.
 
 ```{r}
-ggplot(vs, aes(x = ....)) +
-  geom_histogram(binwidth = 5)
+ggplot(...., aes(x = ....)) +
+  geom_histogram(binwidth = ....)
 ```
 
 Again plot the histogram of `Temp` using vs dataset:
 
+Add bindwidth = 0.1 and fill = "skyblue"
+
 ```{r}
-ggplot(vs, aes(x = ...)) +
-  geom_histogram(binwidth = 0.1, fill = "skyblue") 
+
+
+
+
+
 ```
 
 ## Your Turn 02
 
 Draw a bar plot to find out the number of subjects in each ARMCD. Use `dm` dataset.
+
+Use following properties:
+
+- Geometry: fill = "steelblue"
+- Title : "Subject Distribution by Treatment Arm",
+- X axis : "Treatment Arm Code (ARMCD)",
+- Y axis : "Number of Subjects",
+- Caption: "Source: DM dataset"
+- Add theme_minimal() 
 
 ```{r}
 ggplot(dm, aes(x = ...))+ 
@@ -55,6 +71,9 @@ count_ex3 <- dm |>
 ## Your Turn 04
 
 Draw a line chart using the dataset of `vs_facet` to show `VISIT` in x-axis, `mean` in y-axis and group and colored by `ARMCD` and faceted by `VSTESTCD`.
+
+- Use `theme_classic()`
+- Add scales = "free"
 
 Use `theme_classic()`
 
