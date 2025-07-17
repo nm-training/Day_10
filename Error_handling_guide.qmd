@@ -1,0 +1,283 @@
+---
+title: "Error Handling Guide"
+author: "R Trainer: Binod Jung Bogati (linkedin.com/in/bjungbogati)"
+copyright: "© 2025. Unauthorized distribution or reuse prohibited."
+format: html
+editor: visual
+---
+
+# Error Help Guide for Clinical Statistical Programmers
+
+### Your Turn 01
+
+Go to Tools \> Global Options \> General \> Workspace \> `Uncheck` Restore .RData on Workspace at startup
+
+Then, Save workspace to .RData \> select `Never` option
+
+### Memory Management
+
+```{r}
+
+# Clean environment
+rm(list = ls())
+gc()
+
+# Restart R session : Ctrl + Shift + F10
+.rs.restartR()
+```
+
+## Common Errors in R
+
+### Forget to load package and data
+
+```{r}
+library(tidyverse)
+
+load(url("https://bit.ly/3GwAWzb"))
+load(url("https://bit.ly/3GFedAS"))
+```
+
+### Beginner Mistakes
+
+```{r}
+sum(1, 2
+
+print("Hello)
+
+if (x = 5) print("Yes")
+
+mean |> raw_dm$age
+```
+
+### SAS vs R Differences
+
+| **Error Type** | **SAS Example** | **R Mistake** | **R Solution**    |
+|:---------------|:----------------|:--------------|:------------------|
+| Assignment     | `x = 5;`        | `if (x = 5)`  | Use `<-` and `==` |
+| Missing Values | `if x = .`      | `x == NA`     | `is.na(x)`        |
+
+```{r}
+x = 5; y = 10; z = x + y;  
+
+"" == NA
+```
+
+## Tidyverse-Specific Errors
+
+### Common Mistakes
+
+```{r}
+# Column doesn't exist
+cars |> filter(gear > 3)
+
+# Type mismatch
+cars |> mutate(is_fast = if_else(speed > 20, "Yes", 0))
+
+# Improper joins missing 'by' parameter
+df1 |> left_join(df2) 
+```
+
+### Debugging Strategies
+
+```{r}
+# 1. Check last error
+rlang::last_error()
+
+# 2. Step-by-step evaluation
+step1 <- df1
+step2 <- filter(step1, age == "Alice")
+```
+
+## ✅ 1. Common Errors in `dplyr`
+
+| **Error** | **Cause** | **How to Avoid** |
+|------------------------|------------------------|------------------------|
+| `object not found` | Referencing columns that don't exist (e.g., `mutate(SEX = sex)`) | Check `names(df)` |
+| `Error in mutate(): Problem with column` | Type mismatch or invalid operation | Use `str()` to inspect data types |
+| `group_by()` + `summarise()` drops columns unexpectedly | Grouping columns not handled properly | Add `.groups = "keep"` if needed |
+| Wrong join | Using `left_join()` or `full_join()` with incorrect keys | Specify `by = c("STUDYID", "SUBJID")` carefully |
+
+## ✅ 2. Common Errors in `tidyr`
+
+| **Error** | **Cause** | **How to Avoid** |
+|------------------------|------------------------|------------------------|
+| `pivot_longer()` fails | Overwriting existing columns or wrong column specs | Use `names_to`, `values_to` explicitly |
+| `separate()` fails | Wrong separator or inconsistent data | Use `extra = "merge"` or `fill = "right"` |
+
+## ✅ 3. Date Manipulation Errors
+
+| **Error** | **Cause** | **How to Avoid** |
+|------------------------|------------------------|------------------------|
+| `as.Date()` returns `NA` | Wrong format | Use correct `format` string (e.g., `"%d-%b-%Y"`) |
+| Time zones issues | Inconsistent date-time zone across sites | Use `lubridate::with_tz()` |
+| Arithmetic on factors | Dates stored as character or factor | Always convert: `as.Date(as.character(x))` |
+
+## ✅ 4. File & Dataset Naming Errors
+
+| **Error**          | **Cause**               | **How to Avoid**   |
+|--------------------|-------------------------|--------------------|
+| `File not found`   | Typos or incorrect path | Use `here::here()` |
+| Invalid characters | \`: \* ? \< \>          | \` in file names   |
+
+## ✅ 5. Function Writing Errors
+
+| **Error** | **Cause** | **How to Avoid** |
+|------------------------|------------------------|------------------------|
+| Scope issues (`object not found`) | Referencing global variables inside function | Pass variables as arguments |
+
+## Your Turn
+
+```{r}
+# Bad practice - relies on global variable
+calculate_mean_global <- function() {
+  if (is.numeric(vector)) mean(vector) 
+     else print("Provide a numeric input")
+}
+
+calculate_mean_global()
+
+# Good practice - pass variables as arguments
+calculate_mean <- function(vector) {
+   if (is.numeric(vector)) mean(vector) 
+      else print("Provide a numeric input")
+}
+
+# Usage
+my_vector <- 1:100
+calculate_mean(my_vector)
+
+```
+
+## Clinical Programming Pitfalls
+
+### Data Handling Issues
+
+| **Issue**       | **SAS Behavior** | **R Behavior** | **Solution**        |
+|:----------------|:-----------------|:---------------|:--------------------|
+| Rounding        | 2.5 → 3          | 2.5 → 2        | Custom `round_v2()` |
+| Sorting         | Blanks last      | Blanks first   | Set locale to "C"   |
+| Variable Labels | Automatic        | Attributes     | `labelled` package  |
+
+## Your Turn 01
+
+```{r}
+round(....) 
+
+round_v2 <- \(x, digits = 0, eps = .Machine$double.eps) round(x + x * eps, digits = digits)
+
+round_v2(....) 
+```
+
+```{r}
+# Force English/ASCII sorting so blanks behave like in SAS
+Sys.setlocale("LC_COLLATE", "C")
+```
+
+### Path management
+
+```{r}
+# Use here::here() to define paths for data files.
+
+here::here()
+
+# Use .Rproject for R project management 
+```
+
+## Best Practices for Clinical R
+
+### Tidyverse Style Guide
+
+1.  **Naming**: Use snake_case for operational dataset or variables, follow CDSIC standard for submission (`USUBJID`, `SAFFL`)
+
+```{r}
+names(raw_dm)
+
+# Rename columns to uppercase
+toupper(names(raw_dm))
+
+str_to_upper(names(raw_dm))
+```
+
+2.  **Pipes**: Break long chains with line breaks
+
+```{r}
+our_data |> select(SUBJECT, AGE, SEX) |> filter(AGE > 20)
+
+```
+
+3.  Add proper indentation for readability
+
+```{r}
+our_data|>select(SUBJECT,AGE,SEX)|>filter(AGE > 20)|> arrange(desc(AGE))
+```
+
+## Your Turn 02
+
+```{r}
+#install.packages("styler")
+```
+
+4.  Use selection helpers
+
+```{r}
+our_data |> select(ends_with("BP"), SUBJECT)
+
+# ?select
+```
+
+### Validation Checks
+
+```{r}
+# Check for duplicates
+stopifnot(!any(duplicated(raw_dm$usubjid)))
+
+# Verify expected rows
+nrow(raw_dm) > 0
+
+is.null(raw_dm)
+```
+
+## SAS-to-R Transition Guide
+
+### Common Conversion Errors
+
+``` r
+# SAS: PROC FREQ → R:
+table(raw_dm$race)
+
+# SAS: KEEP/DROP → R:
+select(raw_dm, usubjid, age, sex)
+```
+
+### Your Turn: Debug This Code
+
+```{r}
+
+library(haven)
+# Fix these issues:
+gap <- read_sas(here::here("Day_5-main/data/input.sas7bdat")) 
+gap |> filter(year = "1952")       # Wrong operator
+
+```
+
+## **Factor vs Character Confusion**
+
+```{r}
+filter(cars, SEX == "Male") 
+```
+
+## **Assuming Variable Order is Maintained**
+
+```{r}
+our_data |> 
+  mutate(USUBJID = str_c(STUDYID, SITEID, sep="-")) |> 
+  select(USUBJID, everything())
+```
+
+## **Using `== NA` Instead of `is.na()`**
+
+```{r}
+filter(our_data, AGE == NA | AGE == "")  # Always returns FALSE
+
+filter(our_data, is.na(AGE))
+```

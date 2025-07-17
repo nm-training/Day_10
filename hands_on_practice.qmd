@@ -1,0 +1,70 @@
+---
+title: "Hands on Practice"
+author: "R Trainer: Binod Jung Bogati (linkedin.com/in/bjungbogati)"
+copyright: "© 2025. Unauthorized distribution or reuse prohibited."
+format: html
+editor: visual
+---
+
+```{r}
+library(tidyverse)
+
+load(url("https://bit.ly/4eZIXte"))
+```
+
+## Your Turn 01
+
+Plot histogram of `Height` using vs Dataset
+
+```{r}
+ggplot(vs, aes(x = ....)) +
+  geom_histogram(binwidth = 5)
+```
+
+Again plot the histogram of `Temp` using vs dataset:
+
+```{r}
+ggplot(vs, aes(x = ...)) +
+  geom_histogram(binwidth = 0.1, fill = "skyblue") 
+```
+
+## Your Turn 02
+
+Draw a bar plot to find out the number of subjects in each ARMCD. Use `dm` dataset.
+
+```{r}
+ggplot(dm, aes(x = ...))+ 
+  ...
+
+```
+
+## Your Turn 03
+
+Verify the count of the subjects in each `ARMCD` by using summarise and n() functions learned on Day 6.
+
+```{r}
+count_ex3 <- dm |>
+  group_by(...) |>
+  summarize(...)
+
+# alternatively we can use count() function
+count_ex3 <- dm |>
+  count(...)
+```
+
+## Your Turn 04
+
+Draw a line chart using the dataset of `vs_facet` to show `VISIT` in x-axis, `mean` in y-axis and group and colored by `ARMCD` and faceted by `VSTESTCD`.
+
+Use `theme_classic()`
+
+> facet means displaying same plot with a different groups 
+
+```{r}
+
+ggplot(...., aes(x = , y = , color = , group = )) +
+  geom_.....() +
+  geom_point() +
+  facet_wrap(........, scales = "free") +
+  theme_classic()
+```
