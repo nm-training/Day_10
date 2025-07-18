@@ -125,7 +125,9 @@ step2 <- filter(step1, age == "Alice")
 |------------------------|------------------------|------------------------|
 | Scope issues (`object not found`) | Referencing global variables inside function | Pass variables as arguments |
 
-## Your Turn
+## Your Turn 02
+
+Run the code and find the difference
 
 ```{r}
 # Bad practice - relies on global variable
@@ -134,17 +136,20 @@ calculate_mean_global <- function() {
      else print("Provide a numeric input")
 }
 
-calculate_mean_global()
-
 # Good practice - pass variables as arguments
 calculate_mean <- function(vector) {
    if (is.numeric(vector)) mean(vector) 
       else print("Provide a numeric input")
 }
 
+
 # Usage
-my_vector <- 1:100
-calculate_mean(my_vector)
+vector <- 1:100. # first assigned to calculate mean
+vector <- "apple" # later gets modified 
+
+calculate_mean_global()
+
+calculate_mean(vector = 1:100)
 
 ```
 
@@ -158,7 +163,7 @@ calculate_mean(my_vector)
 | Sorting         | Blanks last      | Blanks first   | Set locale to "C"   |
 | Variable Labels | Automatic        | Attributes     | `labelled` package  |
 
-## Your Turn 01
+## Your Turn 03
 
 ```{r}
 round(....) 
@@ -211,7 +216,7 @@ our_data |> select(SUBJECT, AGE, SEX) |> filter(AGE > 20)
 our_data|>select(SUBJECT,AGE,SEX)|>filter(AGE > 20)|> arrange(desc(AGE))
 ```
 
-## Your Turn 02
+## Your Turn 04
 
 ```{r}
 #install.packages("styler")
@@ -249,21 +254,24 @@ table(raw_dm$race)
 select(raw_dm, usubjid, age, sex)
 ```
 
-### Your Turn: Debug This Code
+### Your Turn 05
+
+Debug the code and find what's missing.
 
 ```{r}
 
-library(haven)
 # Fix these issues:
 gap <- read_sas(here::here("Day_5-main/data/input.sas7bdat")) 
-gap |> filter(year = "1952")       # Wrong operator
+
+gap |> filter(year = "1952")       
 
 ```
 
 ## **Factor vs Character Confusion**
 
 ```{r}
-filter(cars, SEX == "Male") 
+
+filter(df3, sex == "Male") 
 ```
 
 ## **Assuming Variable Order is Maintained**

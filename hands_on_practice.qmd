@@ -41,12 +41,12 @@ Draw a bar plot to find out the number of subjects in each ARMCD. Use `dm` datas
 
 Use following properties:
 
-- Geometry: fill = "steelblue"
-- Title : "Subject Distribution by Treatment Arm",
-- X axis : "Treatment Arm Code (ARMCD)",
-- Y axis : "Number of Subjects",
-- Caption: "Source: DM dataset"
-- Add theme_minimal() 
+-   Geometry: fill = "steelblue"
+-   Title : "Subject Distribution by Treatment Arm",
+-   X axis : "Treatment Arm Code (ARMCD)",
+-   Y axis : "Number of Subjects",
+-   Caption: "Source: DM dataset"
+-   Add theme_minimal()
 
 ```{r}
 ggplot(dm, aes(x = ...))+ 
@@ -72,8 +72,8 @@ count_ex3 <- dm |>
 
 Draw a line chart using the dataset of `vs_facet` to show `VISIT` in x-axis, `mean` in y-axis and group and colored by `ARMCD` and faceted by `VSTESTCD`.
 
-- Use `theme_classic()`
-- Add scales = "free"
+-   Use `theme_classic()`
+-   Add scales = "free"
 
 Use `theme_classic()`
 
